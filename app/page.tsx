@@ -3,6 +3,7 @@ import { Hero } from "@/components/Hero";
 import { PropertyCard } from "@/components/PropertyCard";
 import { PropertyFilter } from "@/components/PropertyFilter";
 import { Services } from "@/components/Services";
+import { Testimonials } from "@/components/Testimonials";
 import { getImoveis, listCidades } from "@/lib/imoveis";
 
 export const dynamic = "force-dynamic";
@@ -69,6 +70,7 @@ export default async function HomePage({ searchParams }: HomeProps) {
           </>
         )}
       </section>
+      <Testimonials />
     </>
   );
 }
