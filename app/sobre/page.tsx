@@ -11,7 +11,7 @@ export const metadata: Metadata = {
 
 // Texto de exemplo. Troque o nome, o cargo e a trajetória quando quiser.
 const corretora = {
-  nome: "Helena Duarte",
+  nome: "Elisangela Dias",
   cargo: "Corretora responsável",
   frase: "Desde 2011, ao lado de quem está começando de novo.",
   creci: "CRECI ativo desde 2011",
