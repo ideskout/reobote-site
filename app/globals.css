@@ -1,0 +1,30 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: dark;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  @apply bg-navy-950 font-sans text-ivory antialiased;
+  background-image:
+    radial-gradient(ellipse 70% 45% at 0% -10%, rgba(201, 162, 74, 0.16), transparent 55%),
+    radial-gradient(ellipse 50% 40% at 100% 0%, rgba(27, 55, 96, 0.55), transparent 50%);
+  background-attachment: fixed;
+}
+
+::selection {
+  background: #c9a24a;
+  color: #070f22;
+}
+
+input,
+select,
+textarea {
+  color-scheme: dark;
+}
