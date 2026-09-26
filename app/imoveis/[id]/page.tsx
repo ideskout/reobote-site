@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
+import { FinancingSimulator } from "@/components/FinancingSimulator";
 import { LogoMark } from "@/components/Logo";
 import { formatArea, formatData, formatPreco } from "@/lib/format";
 import { getImovel } from "@/lib/imoveis";
@@ -98,6 +99,8 @@ export default async function ImovelPage({ params }: DetailProps) {
               Publicado em {formatData(imovel.created_at)}
             </p>
           ) : null}
+
+          <FinancingSimulator preco={imovel.preco} titulo={imovel.titulo} />
         </div>
 
         <aside className="border border-white/10 bg-navy-900/80 p-6 lg:sticky lg:top-24">
