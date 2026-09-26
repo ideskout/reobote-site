@@ -8,6 +8,8 @@ const links = [
   { href: "/", label: "Início" },
   { href: "/#servicos", label: "Serviços" },
   { href: "/#imoveis", label: "Imóveis" },
+  { href: "/sobre", label: "Sobre" },
+  { href: "#contato", label: "Contato" },
 ];
 
 export function Header() {

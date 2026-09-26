@@ -39,6 +39,11 @@ export function Footer() {
               </Link>
             </li>
             <li>
+              <Link href="/sobre" className="transition hover:text-ivory">
+                Sobre
+              </Link>
+            </li>
+            <li>
               <Link href="/admin" className="transition hover:text-ivory">
                 Área do corretor
               </Link>
@@ -46,7 +51,7 @@ export function Footer() {
           </ul>
         </div>
 
-        <div>
+        <div id="contato">
           <p className="text-[11px] uppercase tracking-[0.22em] text-gold-500">
             Contato
           </p>
