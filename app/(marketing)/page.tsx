@@ -2,11 +2,11 @@ import Image from "next/image";
 import Link from "next/link";
 import AnimatedContent from "@/components/AnimatedContent";
 import FadeContent from "@/components/FadeContent";
-import { PropertyRail } from "@/components/property-rail";
+import { FeaturedProperties } from "@/components/featured-properties";
 import { TextReveal } from "@/components/text-reveal";
 import { Button } from "@/components/ui/button";
 import { Card, CardHeader, CardTitle } from "@/components/ui/card";
-import { getImoveis } from "@/lib/imoveis";
+import { getDestaques } from "@/lib/imoveis";
 import { corretora, empresa, getSiteUrl } from "@/lib/site";
 import { buildWhatsAppUrl } from "@/lib/whatsapp";
 
@@ -15,7 +15,7 @@ export const revalidate = 60;
 const servicos = ["Compra", "Venda", "Locação", "Financiamento", "Investimentos"];
 
 export default async function HomePage() {
-  const catalogo = await getImoveis({ page: 1, pageSize: 8 });
+  const destaques = await getDestaques();
   const whatsapp = buildWhatsAppUrl("Olá, Reobote. Quero começar uma conversa sobre um imóvel.");
   const jsonLd = {
     "@context": "https://schema.org",
@@ -60,14 +60,22 @@ export default async function HomePage() {
         </div>
       </section>
 
-      <section className="flex flex-col gap-10 py-24">
-        <div className="flex items-end justify-between gap-6 px-6 md:px-12">
-          <h2 className="font-serif text-5xl font-medium tracking-tight md:text-6xl">Imóveis</h2>
-          <Button asChild variant="outline">
-            <Link href="/imoveis">Ver todos</Link>
+      <section id="destaques" className="flex flex-col gap-16 px-6 py-28 md:px-12 md:py-36">
+        <FadeContent className="flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
+          <div className="flex max-w-3xl flex-col gap-4">
+            <p className="text-xs tracking-[0.28em] text-primary uppercase">Destaques</p>
+            <h2 className="font-serif text-5xl font-medium leading-[0.95] tracking-tight md:text-7xl">
+              Imóveis em destaque
+            </h2>
+            <p className="max-w-md text-sm leading-relaxed text-muted-foreground">
+              Poucos endereços. A foto abre o anúncio; a ficha guarda medidas, descrição e simulação.
+            </p>
+          </div>
+          <Button asChild variant="outline" className="w-fit">
+            <Link href="/imoveis">Ver o índice</Link>
           </Button>
-        </div>
-        <PropertyRail imoveis={catalogo.data} />
+        </FadeContent>
+        <FeaturedProperties imoveis={destaques} />
       </section>
 
       <AnimatedContent distance={24} duration={0.5}>
