@@ -163,3 +163,113 @@ from (
     )
 ) as exemplos (titulo, cidade, preco, categoria, tipo, quartos, area, descricao, foto_url)
 where not exists (select 1 from public.imoveis);
+
+alter table public.imoveis add column if not exists endereco text;
+alter table public.imoveis add column if not exists bairro text;
+alter table public.imoveis add column if not exists destaque boolean not null default false;
+alter table public.imoveis add column if not exists latitude double precision;
+alter table public.imoveis add column if not exists longitude double precision;
+
+create table if not exists public.clientes (
+  id uuid primary key default gen_random_uuid(),
+  nome text not null,
+  telefone text,
+  email text,
+  origem text not null default 'site',
+  notas text not null default '',
+  created_at timestamptz not null default now()
+);
+
+create table if not exists public.leads (
+  id uuid primary key default gen_random_uuid(),
+  cliente_id uuid not null references public.clientes (id) on delete cascade,
+  imovel_id uuid references public.imoveis (id) on delete set null,
+  estagio text not null default 'novo' check (estagio in ('novo', 'contato', 'visita', 'proposta', 'fechado', 'perdido')),
+  origem text not null default 'site',
+  created_at timestamptz not null default now(),
+  updated_at timestamptz not null default now()
+);
+
+create table if not exists public.lead_eventos (
+  id uuid primary key default gen_random_uuid(),
+  lead_id uuid not null references public.leads (id) on delete cascade,
+  descricao text not null,
+  created_at timestamptz not null default now()
+);
+
+create table if not exists public.visitas (
+  id uuid primary key default gen_random_uuid(),
+  lead_id uuid not null references public.leads (id) on delete cascade,
+  imovel_id uuid references public.imoveis (id) on delete set null,
+  quando timestamptz not null,
+  status text not null default 'agendada' check (status in ('agendada', 'realizada', 'cancelada')),
+  created_at timestamptz not null default now()
+);
+
+create index if not exists leads_estagio_idx on public.leads (estagio);
+create index if not exists visitas_quando_idx on public.visitas (quando);
+
+alter table public.clientes enable row level security;
+alter table public.leads enable row level security;
+alter table public.lead_eventos enable row level security;
+alter table public.visitas enable row level security;
+
+drop policy if exists "clientes_auth" on public.clientes;
+drop policy if exists "leads_auth" on public.leads;
+drop policy if exists "lead_eventos_auth" on public.lead_eventos;
+drop policy if exists "visitas_auth" on public.visitas;
+
+create policy "clientes_auth" on public.clientes for all to authenticated using (true) with check (true);
+create policy "leads_auth" on public.leads for all to authenticated using (true) with check (true);
+create policy "lead_eventos_auth" on public.lead_eventos for all to authenticated using (true) with check (true);
+create policy "visitas_auth" on public.visitas for all to authenticated using (true) with check (true);
+
+grant select, insert, update, delete on public.clientes to authenticated;
+grant select, insert, update, delete on public.leads to authenticated;
+grant select, insert, update, delete on public.lead_eventos to authenticated;
+grant select, insert, update, delete on public.visitas to authenticated;
+
+create or replace function public.agendar_visita(
+  p_nome text,
+  p_telefone text,
+  p_email text,
+  p_imovel_id uuid,
+  p_quando timestamptz,
+  p_mensagem text
+) returns void
+language plpgsql
+security definer
+set search_path = public
+as $$
+declare
+  v_cliente uuid;
+  v_lead uuid;
+begin
+  if p_nome is null or length(trim(p_nome)) < 2 then
+    raise exception 'Nome inválido';
+  end if;
+  if p_quando is null or p_quando < now() - interval '1 minute' then
+    raise exception 'Escolha uma data futura';
+  end if;
+
+  insert into public.clientes (nome, telefone, email, origem)
+  values (trim(p_nome), nullif(trim(p_telefone), ''), nullif(trim(coalesce(p_email, '')), ''), 'site')
+  returning id into v_cliente;
+
+  insert into public.leads (cliente_id, imovel_id, estagio, origem)
+  values (v_cliente, p_imovel_id, 'novo', 'site')
+  returning id into v_lead;
+
+  insert into public.visitas (lead_id, imovel_id, quando)
+  values (v_lead, p_imovel_id, p_quando);
+
+  insert into public.lead_eventos (lead_id, descricao)
+  values (
+    v_lead,
+    coalesce(nullif(trim(coalesce(p_mensagem, '')), ''), 'Visita solicitada pelo site.')
+  );
+end;
+$$;
+
+revoke all on function public.agendar_visita(text, text, text, uuid, timestamptz, text) from public;
+grant execute on function public.agendar_visita(text, text, text, uuid, timestamptz, text) to anon, authenticated;

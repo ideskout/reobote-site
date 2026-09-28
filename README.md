@@ -1,12 +1,13 @@
 # Reobote
 
-Site da consultoria imobiliária Reobote. Next.js 14 (App Router), Tailwind CSS e Supabase.
+Site da consultoria imobiliária Reobote. Next.js 15 (App Router), Tailwind CSS e Supabase.
 
 ## Preparar o Supabase
 
 1. Crie um projeto em [supabase.com](https://supabase.com).
 2. Abra **SQL Editor**, cole o conteúdo de `supabase/schema.sql` e execute.
-   Isso cria a tabela `imoveis`, as políticas de acesso e o bucket público `fotos-imoveis`.
+   Isso cria a tabela `imoveis`, o CRM (clientes, leads, visitas), as políticas de acesso e o bucket público `fotos-imoveis`.
+   Se o projeto já existia, execute o arquivo de novo: os comandos são idempotentes.
 3. Em **Authentication > Users**, crie um usuário com e-mail e senha.
    Se a confirmação de e-mail estiver ligada, confirme o usuário no painel ou desative **Confirm email** em Authentication > Providers > Email.
 4. Em **Project Settings > API**, copie a Project URL e a chave `anon` `public`.

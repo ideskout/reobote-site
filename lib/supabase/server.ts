@@ -8,8 +8,8 @@ type CookieToSet = {
   options: CookieOptions;
 };
 
-export function createClient() {
-  const cookieStore = cookies();
+export async function createClient() {
+  const cookieStore = await cookies();
   const { url, key } = getSupabaseEnv();
 
   return createServerClient(url, key, {

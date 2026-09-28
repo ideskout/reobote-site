@@ -2,29 +2,94 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  color-scheme: dark;
-}
+@layer base {
+  :root {
+    --background: 0 0% 4.3%;
+    --foreground: 0 0% 97%;
+    --card: 0 0% 6.7%;
+    --card-foreground: 0 0% 97%;
+    --popover: 0 0% 6.7%;
+    --popover-foreground: 0 0% 97%;
+    --primary: 42 54% 50%;
+    --primary-foreground: 0 0% 4%;
+    --secondary: 0 0% 9%;
+    --secondary-foreground: 0 0% 97%;
+    --muted: 0 0% 9%;
+    --muted-foreground: 0 0% 70%;
+    --accent: 0 0% 12%;
+    --accent-foreground: 0 0% 97%;
+    --destructive: 0 62% 45%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 0 0% 100% / 0.08;
+    --input: 0 0% 100% / 0.08;
+    --ring: 42 54% 50%;
+    --highlight: 42 54% 50%;
+    --radius: 0.25rem;
+    --sidebar-background: 0 0% 4.3%;
+    --sidebar-foreground: 0 0% 97%;
+    --sidebar-primary: 42 54% 50%;
+    --sidebar-primary-foreground: 0 0% 4%;
+    --sidebar-accent: 0 0% 9%;
+    --sidebar-accent-foreground: 0 0% 97%;
+    --sidebar-border: 0 0% 100% / 0.08;
+    --sidebar-ring: 42 54% 50%;
+  }
 
-html {
-  scroll-behavior: smooth;
-}
+  .dark {
+    --background: 0 0% 4.3%;
+    --foreground: 0 0% 97%;
+    --card: 0 0% 6.7%;
+    --card-foreground: 0 0% 97%;
+    --popover: 0 0% 6.7%;
+    --popover-foreground: 0 0% 97%;
+    --primary: 42 54% 50%;
+    --primary-foreground: 0 0% 4%;
+    --secondary: 0 0% 9%;
+    --secondary-foreground: 0 0% 97%;
+    --muted: 0 0% 9%;
+    --muted-foreground: 0 0% 70%;
+    --accent: 0 0% 12%;
+    --accent-foreground: 0 0% 97%;
+    --destructive: 0 62% 45%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 0 0% 100% / 0.08;
+    --input: 0 0% 100% / 0.08;
+    --ring: 42 54% 50%;
+    --highlight: 42 54% 50%;
+    --sidebar-background: 0 0% 4.3%;
+    --sidebar-foreground: 0 0% 97%;
+    --sidebar-primary: 42 54% 50%;
+    --sidebar-primary-foreground: 0 0% 4%;
+    --sidebar-accent: 0 0% 9%;
+    --sidebar-accent-foreground: 0 0% 97%;
+    --sidebar-border: 0 0% 100% / 0.08;
+    --sidebar-ring: 42 54% 50%;
+  }
 
-body {
-  @apply bg-navy-950 font-sans text-ivory antialiased;
-  background-image:
-    radial-gradient(ellipse 70% 45% at 0% -10%, rgba(201, 162, 74, 0.16), transparent 55%),
-    radial-gradient(ellipse 50% 40% at 100% 0%, rgba(27, 55, 96, 0.55), transparent 50%);
-  background-attachment: fixed;
+  * {
+    @apply border-border;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-background text-foreground antialiased;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+  }
 }
 
 ::selection {
-  background: #c9a24a;
-  color: #070f22;
+  background: hsl(var(--highlight));
+  color: hsl(var(--primary-foreground));
 }
 
-input,
-select,
-textarea {
-  color-scheme: dark;
+.font-serif {
+  font-family: var(--font-display), Georgia, serif;
 }

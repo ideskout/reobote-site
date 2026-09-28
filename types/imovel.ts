@@ -5,6 +5,8 @@ export type Imovel = {
   id: string;
   titulo: string;
   cidade: string;
+  bairro: string | null;
+  endereco: string | null;
   preco: number;
   categoria: Categoria;
   tipo: Tipo;
@@ -12,12 +14,17 @@ export type Imovel = {
   area: number;
   descricao: string;
   foto_url: string | null;
+  destaque: boolean;
+  latitude: number | null;
+  longitude: number | null;
   created_at: string;
 };
 
 export type ImovelInput = {
   titulo: string;
   cidade: string;
+  bairro: string | null;
+  endereco: string | null;
   preco: number;
   categoria: Categoria;
   tipo: Tipo;
@@ -25,6 +32,9 @@ export type ImovelInput = {
   area: number;
   descricao: string;
   foto_url: string | null;
+  destaque: boolean;
+  latitude: number | null;
+  longitude: number | null;
 };
 
 export type ImovelFilters = {
@@ -32,4 +42,7 @@ export type ImovelFilters = {
   cidade?: string;
   tipo?: string;
   categoria?: string;
+  page?: number;
+  pageSize?: number;
+  destaque?: boolean;
 };

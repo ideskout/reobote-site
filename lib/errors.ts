@@ -9,8 +9,8 @@ export function friendlyError(message: string) {
     return "Confirme o e-mail deste usuário no Supabase antes de entrar.";
   }
 
-  if (lower.includes("row-level security")) {
-    return "Sem permissão para alterar imóveis. Entre novamente e confira se o arquivo supabase/schema.sql foi executado.";
+  if (lower.includes("row-level security") || lower.includes("agendar_visita") || lower.includes("schema cache")) {
+    return "Sem permissão ou tabela ausente. Execute novamente o arquivo supabase/schema.sql no SQL Editor do Supabase.";
   }
 
   if (lower.includes("bucket") || lower.includes("fotos-imoveis")) {
